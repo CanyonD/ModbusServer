@@ -1,0 +1,24 @@
+{
+  "name": "modbusserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CanyonD/ModbusServer.git"
+  },
+  "author": "Aleksey Zimin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CanyonD/ModbusServer/issues"
+  },
+  "homepage": "https://github.com/CanyonD/ModbusServer#readme",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.16.1"
+  }
+}
