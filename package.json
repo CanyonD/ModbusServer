@@ -19,6 +19,8 @@
   "homepage": "https://github.com/CanyonD/ModbusServer#readme",
   "dependencies": {
     "body-parser": "^1.17.2",
-    "express": "^4.16.1"
+    "express": "^4.16.1",
+    "sqlite3": "^4.0.0",
+    "python-shell": "^0.5.0"
   }
 }

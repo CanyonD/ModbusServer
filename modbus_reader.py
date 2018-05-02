@@ -4,6 +4,37 @@ import minimalmodbus
 import traceback
 import serial.rs485
 import time
+import sqlite3
+
+
+dbConn = sqlite3.connect('database_server.db')
+dbCursor = dbConn.cursor()
+
+dbCursor.execute("CREATE TABLE IF NOT EXISTS `server_values` ("+
+    "`id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "+
+    "`device_id` INTEGER NOT NULL,"+
+    "`value` REAL DEFAULT 0,"+
+    "`timestamp` INTEGER);")
+dbConn.commit()
+dbConn.close()
+
+dbConn = sqlite3.connect('database_server.db')
+dbCursor = dbConn.cursor()
+
+values = [(3,2),(3,6)]
+dbCursor.executemany('INSERT INTO server_values (device_id, value) VALUES (?,?)', values)
+dbConn.commit()
+
+dbCursor.execute("SELECT * FROM server_values")
+for row in dbCursor:
+    print row
+# print dbCursor.fetchone()
+dbConn.close()
+
+
+exit(0)
+
+
 
 minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
 
