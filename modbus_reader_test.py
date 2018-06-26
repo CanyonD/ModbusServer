@@ -8,7 +8,9 @@ minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
 port = 'COM6'
 
 deviceId = [
-    10, 11, 12, 13, 21, 22, 23
+    10, 11, 12, 
+#	13, 
+	21, 22, 23
 ]
 instrument = [
     minimalmodbus.Instrument(port, deviceId[0]),
@@ -17,7 +19,7 @@ instrument = [
     minimalmodbus.Instrument(port, deviceId[3]),
     minimalmodbus.Instrument(port, deviceId[4]),
     minimalmodbus.Instrument(port, deviceId[5]),
-    minimalmodbus.Instrument(port, deviceId[6])
+#    minimalmodbus.Instrument(port, deviceId[6])
 ]
 for inst in instrument:
     inst.mode = minimalmodbus.MODE_RTU # rtu or ascii mode
