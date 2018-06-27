@@ -76,7 +76,7 @@ http.createServer(function (request, response) {
     // });
     if (request.url === '/') {
 
-        let sql = `SELECT * FROM server_values;`;
+        let sql = `SELECT * FROM server_values ORDER BY id DESC LIMIT 20;`;
     
         db.all(sql, [], (err, rows) => {
             if (err) {
