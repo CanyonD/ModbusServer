@@ -65,19 +65,22 @@ while True:
         try:
             values = inst.read_registers(1,10,4) # registers from 1 to 10
             
-            for i in range(0, len(values)):
+            # for i in range(0, 5):
+            #    dbCursor.executemany('INSERT INTO server_values (device_id, value) VALUES (?,?)', [(inst.address*100 + i, values[i])])
+            #    dbConn.commit()
+            for i in range(0, 10):
+                dbCursor.executemany('INSERT OR REPLACE INTO server_values (id, device_id, value) VALUES ((SELECT id from server_values WHERE device_id=(?) ), ?,?)', [(inst.address*100 + i, inst.address*100 + i, values[i])])
+                dbConn.commit()
 #                print i
-                dbCursor.execute("SELECT * FROM server_values WHERE device_id=(?) ORDER BY id DESC LIMIT 1;", (inst.address*100 + i))
-                if (len(dbCursor.fetchall()) != 0):
-                    for row in dbCursor:
-                        if (row[2] != values[i]):
-                            dbCursor.executemany('INSERT INTO server_values (device_id, value) VALUES (?,?)', [(inst.address*100 + i, values[i])])
-                            dbConn.commit()
-                else:
-                    dbCursor.executemany('INSERT INTO server_values (device_id, value) VALUES (?,?)', [(inst.address*100 + i, values[i])])
-                    dbConn.commit()
-#                dbCursor.executemany('INSERT INTO server_values (device_id, value) VALUES (?,?)', [(inst.address*100 + i, values[i])])
-#                dbConn.commit()
+                # dbCursor.execute("SELECT * FROM server_values WHERE device_id=(?) ORDER BY id DESC LIMIT 1;", (inst.address*100 + i))
+                # if (len(dbCursor.fetchall()) != 0):
+                #     for row in dbCursor:
+                #         if (row[2] != values[i]):
+                #             dbCursor.executemany('INSERT INTO server_values (device_id, value) VALUES (?,?)', [(inst.address*100 + i, values[i])])
+                #             dbConn.commit()
+                # else:
+                #     dbCursor.executemany('INSERT INTO server_values (device_id, value) VALUES (?,?)', [(inst.address*100 + i, values[i])])
+                #     dbConn.commit()
         except:
             fails[index] = fails[index] + 1
 #            print ("Failed to read Device #", inst.address, "fails: ", fails[index])

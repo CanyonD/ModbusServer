@@ -12,17 +12,10 @@ PythonShell.run('modbus_reader.py', function (err) {
     console.log('finished python script');
 });
 
-// close the database connection
-// db.close();
-
-
-// var React = require('react');
-
-
 let db = new sqlite3.Database('./database_server.db');
 
 http.createServer(function (request, response) {
-    // console.log(request.url);
+    console.log(request.url);
     var uri = url.parse(request.url).pathname,
         filename = path.join(process.cwd(), uri);
     // if (request.url === '/test_upload/fileupload') {
@@ -75,9 +68,36 @@ http.createServer(function (request, response) {
     //     });
     // });
     if (request.url === '/') {
+        fs.readFile(path.join(__dirname+'/index.html'), function (err, data) {
+            if (!err) {
+                response.writeHead(200);
+                response.write(data.toString());
+                response.end();
+            } else {
+                response.writeHead(404, {"Content-Type": "text/plain"});
+                response.write("404 Not Found\n");
+                response.end();
+                return;
+            }
+        });
+    }
+    if (request.url === '/root.js') {
+        fs.readFile(path.join(__dirname+'/root.js'), function (err, data) {
+            if (!err) {
+                response.writeHead(200);
+                response.write(data.toString());
+                response.end();
+            } else {
+                response.writeHead(404, {"Content-Type": "text/plain"});
+                response.write("404 Not Found\n");
+                response.end();
+                return;
+            }
+        });
+    }
 
-        let sql = `SELECT * FROM server_values ORDER BY id DESC LIMIT 20;`;
-    
+    if (request.url === '/data') {
+        let sql = `SELECT * FROM server_values ORDER BY id DESC LIMIT 100;`;
         db.all(sql, [], (err, rows) => {
             if (err) {
                 response.writeHead(500, {'Content-Type': 'text/html'});
@@ -85,12 +105,6 @@ http.createServer(function (request, response) {
                 response.end();
                 throw err;
             }
-            // let string = '';
-            // rows.forEach((row) => {
-            //     console.log(row)
-            //     string += `${row.id} : ${row.device_id} : ${row.value} : ${row.timestamp} <br>`
-            // });
-            // console.log('response')
             response.writeHead(200, {'Content-Type': 'application/json'});
             response.write(JSON.stringify(rows));
             response.end();
