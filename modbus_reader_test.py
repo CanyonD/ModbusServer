@@ -2,10 +2,11 @@
 import serial
 import minimalmodbus
 import serial.rs485
+import sys
 
 minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
 
-port = 'COM6'
+port = '/dev/ttyUSB1'
 
 deviceId = [
     10, 11, 12, 
@@ -24,7 +25,7 @@ instrument = [
 for inst in instrument:
     inst.mode = minimalmodbus.MODE_RTU # rtu or ascii mode
     inst.serial.baudrate = 9600 # Baud
-    inst.serial.rs485_mode = serial.rs485.RS485Settings()
+#    inst.serial.rs485_mode = serial.rs485.RS485Settings()
     inst.serial.bytesize = 8
     inst.serial.parity   = serial.PARITY_NONE
     inst.serial.stopbits = 1
@@ -32,12 +33,17 @@ for inst in instrument:
 #    inst.debug = True
     print inst
 	
+#values = inst.read_registers(1,10,4) # registers from 1 to 10
+#print ('device = ', inst.address, 'values = ', values)
+#sys.exit(0)
+
 fails = [0] * len(deviceId)
 while True:
     for index, inst in enumerate(instrument):
         try:
             values = inst.read_registers(1,10,4) # registers from 1 to 10
             print ('device = ', inst.address, 'values = ', values)
+#            sys.exit(0)
         except:
             fails[index] = fails[index] + 1
             print ("Failed to read Device #", inst.address, "fails: ", fails[index])

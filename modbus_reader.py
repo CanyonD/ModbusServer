@@ -34,7 +34,7 @@ dbCursor = dbConn.cursor()
 
 minimalmodbus.CLOSE_PORT_AFTER_EACH_CALL = True
 
-port = 'COM6'
+port = '/dev/ttyUSB1'
 
 deviceId = [
     10, 11, 12, 
@@ -51,7 +51,7 @@ instrument = [
 for inst in instrument:
     inst.mode = minimalmodbus.MODE_RTU # rtu or ascii mode
     inst.serial.baudrate = 9600 # Baud
-    inst.serial.rs485_mode = serial.rs485.RS485Settings()
+#    inst.serial.rs485_mode = serial.rs485.RS485Settings()
     inst.serial.bytesize = 8
     inst.serial.parity   = serial.PARITY_NONE
     inst.serial.stopbits = 1
@@ -83,6 +83,6 @@ while True:
                 #     dbConn.commit()
         except:
             fails[index] = fails[index] + 1
-#            print ("Failed to read Device #", inst.address, "fails: ", fails[index])
-
+            print ("Failed to read Device #", inst.address, "fails: ", fails[index])
+    time.sleep(0.5)
 dbConn.close()
